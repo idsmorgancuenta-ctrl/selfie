@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Selfie Booth</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+  body {
+    margin: 0;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background: #ffffff;
+    color: #111;
+  }
+
+  .app {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .title {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+  }
+
+  .camera-card {
+    position: relative;
+    width: 320px;
+    height: 420px;
+    background: #f9f9f9;
+    border-radius: 26px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+    overflow: hidden;
+  }
+
+  video, canvas {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .frame {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    pointer-events: none;
+  }
+
+  .footer {
+    margin-top: 25px;
+    text-align: center;
+  }
+
+  .capture-btn {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: #111;
+    margin: auto;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  }
+
+  .capture-btn::after {
+    content: '';
+    display: block;
+    width: 54px;
+    height: 54px;
+    margin: 8px;
+    border-radius: 50%;
+    background: white;
+  }
+
+  .download a {
+    display: block;
+    margin-top: 12px;
+    color: #111;
+    font-size: 14px;
+    text-decoration: underline;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="app">
+  <div class="title">Selfie del Evento</div>
+
+  <div class="camera-card">
+    <video id="video" autoplay playsinline></video>
+    <img src="marco.png" class="frame">
+    <canvas id="canvas" style="display:none;"></canvas>
+  </div>
+
+  <div class="footer">
+    <div class="capture-btn" onclick="takePhoto()"></div>
+    <div class="download">
+      <a id="download" download="selfie-evento.png"></a>
+    </div>
+  </div>
+</div>
+
+<script>
+  const video = document.getElementById("video");
+  const canvas = document.getElementById("canvas");
+  const download = document.getElementById("download");
+
+  const marcoImg = new Image();
+  marcoImg.src = "marco.png";
+
+  navigator.mediaDevices.getUserMedia({
+    video: { facingMode: "user" },
+    audio: false
+  }).then(stream => {
+    video.srcObject = stream;
+  });
+
+  function takePhoto() {
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    const ctx = canvas.getContext("2d");
+
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    ctx.drawImage(marcoImg, 0, 0, canvas.width, canvas.height);
+
+    const img = canvas.toDataURL("image/png");
+    download.href = img;
+    download.textContent = "Descargar selfie";
+  }
+</script>
+
+</body>
+</html>
