@@ -21,11 +21,10 @@
     justify-content: center;
   }
 
-  .title {
-    font-size: 22px;
-    font-weight: 600;
+  /* LOGO */
+  .logo {
+    width: 120px;
     margin-bottom: 20px;
-    letter-spacing: 1px;
   }
 
   .camera-card {
@@ -53,8 +52,17 @@
     pointer-events: none;
   }
 
+  /* TEXTO INFERIOR */
+  .message {
+    margin-top: 18px;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    text-align: center;
+    color: #444;
+  }
+
   .footer {
-    margin-top: 25px;
+    margin-top: 18px;
     text-align: center;
   }
 
@@ -63,7 +71,6 @@
     height: 70px;
     border-radius: 50%;
     background: #111;
-    margin: auto;
     cursor: pointer;
     box-shadow: 0 10px 20px rgba(0,0,0,0.2);
   }
@@ -80,9 +87,9 @@
 
   .download a {
     display: block;
-    margin-top: 12px;
+    margin-top: 10px;
+    font-size: 13px;
     color: #111;
-    font-size: 14px;
     text-decoration: underline;
   }
 </style>
@@ -91,20 +98,31 @@
 <body>
 
 <div class="app">
-  <div class="title">Selfie del Evento</div>
 
+  <!-- LOGO -->
+  <img src="logo.png" class="logo" alt="Logo del evento">
+
+  <!-- CÁMARA -->
   <div class="camera-card">
     <video id="video" autoplay playsinline></video>
     <img src="marco.png" class="frame">
     <canvas id="canvas" style="display:none;"></canvas>
   </div>
 
+  <!-- MENSAJE -->
+  <div class="message">
+    Recuerda este momento<br>
+    con nosotros
+  </div>
+
+  <!-- BOTÓN -->
   <div class="footer">
     <div class="capture-btn" onclick="takePhoto()"></div>
     <div class="download">
       <a id="download" download="selfie-evento.png"></a>
     </div>
   </div>
+
 </div>
 
 <script>
