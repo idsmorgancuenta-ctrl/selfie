@@ -7,9 +7,9 @@
 
 <style>
 :root {
-  --bg1: #f6f6f6;
-  --bg2: #eaeaea;
-  --glass: rgba(255,255,255,0.75);
+  --bg1: #faf7f1;
+  --bg2: #f2efe6;
+  --glass: rgba(255,255,255,0.78);
   --text: #111;
   --muted: #666;
 }
@@ -21,8 +21,46 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
   background: linear-gradient(135deg, var(--bg1), var(--bg2));
   color: var(--text);
+  overflow: hidden;
 }
 
+/* 🌿 HOJAS VECTORIALES */
+.leaves {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.leaf {
+  position: absolute;
+  top: -15%;
+  width: 52px;
+  fill: #9fb882;
+  opacity: 0.75;
+  animation: fall linear infinite;
+}
+
+.leaf.blur {
+  filter: blur(2px);
+  opacity: 0.45;
+}
+
+/* posiciones y variaciones */
+.l1 { left: 8%;  animation-duration: 26s; width: 46px; }
+.l2 { left: 22%; animation-duration: 32s; fill:#b7cca0; }
+.l3 { left: 40%; animation-duration: 24s; fill:#8faa6f; }
+.l4 { left: 58%; animation-duration: 30s; width: 40px; }
+.l5 { left: 74%; animation-duration: 28s; fill:#a9c28a; }
+.l6 { left: 88%; animation-duration: 34s; width: 36px; }
+
+@keyframes fall {
+  0%   { transform: translateY(-20vh) rotate(0deg); }
+  100% { transform: translateY(120vh) rotate(360deg); }
+}
+
+/* APP */
 .app {
   min-height: 100vh;
   display: flex;
@@ -30,6 +68,8 @@ body {
   align-items: center;
   justify-content: center;
   padding: 28px;
+  position: relative;
+  z-index: 1;
 }
 
 .logo {
@@ -63,6 +103,7 @@ video {
   object-fit: cover;
 }
 
+/* FLASH */
 .flash {
   position: absolute;
   inset: 0;
@@ -70,17 +111,16 @@ video {
   opacity: 0;
   pointer-events: none;
 }
-
 .flash.active {
   animation: flash 0.25s ease;
 }
-
 @keyframes flash {
   0% { opacity: 0; }
   50% { opacity: 0.9; }
   100% { opacity: 0; }
 }
 
+/* CONTADOR */
 .counter {
   position: absolute;
   inset: 0;
@@ -93,11 +133,9 @@ video {
   text-shadow: 0 10px 30px rgba(0,0,0,0.6);
   opacity: 0;
 }
-
 .counter.show {
   animation: count 1s ease forwards;
 }
-
 @keyframes count {
   0% { opacity: 0; transform: scale(1.4); }
   30% { opacity: 1; transform: scale(1); }
@@ -120,6 +158,7 @@ video {
   gap: 14px;
 }
 
+/* BOTÓN */
 .capture-btn {
   width: 78px;
   height: 78px;
@@ -132,11 +171,7 @@ video {
   box-shadow: 0 18px 40px rgba(0,0,0,0.35);
   transition: transform 0.15s ease;
 }
-
-.capture-btn:active {
-  transform: scale(0.9);
-}
-
+.capture-btn:active { transform: scale(0.9); }
 .capture-btn::after {
   content: '';
   width: 56px;
@@ -144,12 +179,12 @@ video {
   border-radius: 50%;
   background: #fff;
 }
-
 .capture-btn.disabled {
   opacity: 0.4;
   pointer-events: none;
 }
 
+/* PREVIEW */
 .preview {
   margin-top: 14px;
   display: none;
@@ -157,29 +192,34 @@ video {
   align-items: center;
   gap: 10px;
 }
-
 .preview img {
   width: 160px;
   border-radius: 16px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }
-
 .preview a {
   font-size: 14px;
   font-weight: 500;
   color: var(--text);
   text-decoration: none;
 }
-
-.preview a:hover {
-  text-decoration: underline;
-}
+.preview a:hover { text-decoration: underline; }
 
 canvas { display: none; }
 </style>
 </head>
 
 <body>
+
+<!-- 🌿 HOJAS -->
+<div class="leaves">
+  <svg class="leaf l1" viewBox="0 0 100 50"><path d="M5 25C25 0 75 0 95 25C75 50 25 50 5 25Z"/></svg>
+  <svg class="leaf l2 blur" viewBox="0 0 100 50"><path d="M5 25C25 0 75 0 95 25C75 50 25 50 5 25Z"/></svg>
+  <svg class="leaf l3" viewBox="0 0 100 50"><path d="M5 25C25 0 75 0 95 25C75 50 25 50 5 25Z"/></svg>
+  <svg class="leaf l4 blur" viewBox="0 0 100 50"><path d="M5 25C25 0 75 0 95 25C75 50 25 50 5 25Z"/></svg>
+  <svg class="leaf l5" viewBox="0 0 100 50"><path d="M5 25C25 0 75 0 95 25C75 50 25 50 5 25Z"/></svg>
+  <svg class="leaf l6 blur" viewBox="0 0 100 50"><path d="M5 25C25 0 75 0 95 25C75 50 25 50 5 25Z"/></svg>
+</div>
 
 <div class="app">
 
