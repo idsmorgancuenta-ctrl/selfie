@@ -6,98 +6,176 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
-  body {
-    margin: 0;
-    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
-    background: #f5f5f5;
-    color: #111;
-  }
+:root {
+  --bg1: #f6f6f6;
+  --bg2: #eaeaea;
+  --glass: rgba(255,255,255,0.75);
+  --text: #111;
+  --muted: #666;
+}
 
-  .app {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
+* { box-sizing: border-box; }
 
-  /* LOGO */
-  .logo {
-    width: 110px;
-    margin-bottom: 24px;
-  }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, var(--bg1), var(--bg2));
+  color: var(--text);
+}
 
-  .camera-card {
-    position: relative;
-    width: 320px;
-    height: 420px;
-    background: #000;
-    border-radius: 28px;
-    box-shadow: 0 25px 50px rgba(0,0,0,0.18);
-    overflow: hidden;
-  }
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 28px;
+}
 
-  video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    background: #000;
-  }
+.logo {
+  width: 96px;
+  margin-bottom: 28px;
+  opacity: 0.95;
+}
 
-  canvas {
-    display: none;
-  }
+.camera-shell {
+  background: var(--glass);
+  backdrop-filter: blur(18px);
+  border-radius: 36px;
+  padding: 16px;
+  box-shadow:
+    0 40px 80px rgba(0,0,0,0.15),
+    inset 0 0 0 1px rgba(255,255,255,0.6);
+}
 
-  .message {
-    margin-top: 20px;
-    font-size: 15px;
-    text-align: center;
-    color: #444;
-    line-height: 1.4;
-  }
+.camera-card {
+  width: 320px;
+  height: 420px;
+  border-radius: 26px;
+  overflow: hidden;
+  background: #000;
+  position: relative;
+}
 
-  .footer {
-    margin-top: 24px;
-    text-align: center;
-  }
+video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
-  .capture-btn {
-    width: 72px;
-    height: 72px;
-    border-radius: 50%;
-    background: #111;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 12px 24px rgba(0,0,0,0.25);
-    transition: transform 0.15s ease;
-  }
+.flash {
+  position: absolute;
+  inset: 0;
+  background: white;
+  opacity: 0;
+  pointer-events: none;
+}
 
-  .capture-btn:active {
-    transform: scale(0.94);
-  }
+.flash.active {
+  animation: flash 0.25s ease;
+}
 
-  .capture-btn::after {
-    content: '';
-    width: 52px;
-    height: 52px;
-    border-radius: 50%;
-    background: #fff;
-  }
+@keyframes flash {
+  0% { opacity: 0; }
+  50% { opacity: 0.9; }
+  100% { opacity: 0; }
+}
 
-  .download a {
-    display: inline-block;
-    margin-top: 12px;
-    font-size: 14px;
-    color: #111;
-    text-decoration: none;
-    font-weight: 500;
-  }
+.counter {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 96px;
+  font-weight: 600;
+  color: white;
+  text-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  opacity: 0;
+}
 
-  .download a:hover {
-    text-decoration: underline;
-  }
+.counter.show {
+  animation: count 1s ease forwards;
+}
+
+@keyframes count {
+  0% { opacity: 0; transform: scale(1.4); }
+  30% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; }
+}
+
+.message {
+  margin-top: 22px;
+  text-align: center;
+  font-size: 15px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.footer {
+  margin-top: 26px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.capture-btn {
+  width: 78px;
+  height: 78px;
+  border-radius: 50%;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 18px 40px rgba(0,0,0,0.35);
+  transition: transform 0.15s ease;
+}
+
+.capture-btn:active {
+  transform: scale(0.9);
+}
+
+.capture-btn::after {
+  content: '';
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.capture-btn.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.preview {
+  margin-top: 14px;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.preview img {
+  width: 160px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.preview a {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.preview a:hover {
+  text-decoration: underline;
+}
+
+canvas { display: none; }
 </style>
 </head>
 
@@ -105,54 +183,75 @@
 
 <div class="app">
 
-  <!-- LOGO -->
-  <img src="logo.png" class="logo" alt="Logo del evento">
+  <img src="logo.png" class="logo" alt="Logo">
 
-  <!-- CÁMARA -->
-  <div class="camera-card">
-    <video id="video" autoplay playsinline></video>
-    <canvas id="canvas"></canvas>
+  <div class="camera-shell">
+    <div class="camera-card">
+      <video id="video" autoplay playsinline></video>
+      <div class="counter" id="counter"></div>
+      <div class="flash" id="flash"></div>
+      <canvas id="canvas"></canvas>
+    </div>
   </div>
 
-  <!-- MENSAJE -->
   <div class="message">
-    Recuerda este momento<br>
-    con nosotros
+    Sonríe ✨<br>
+    capturamos el momento perfecto
   </div>
 
-  <!-- BOTÓN -->
   <div class="footer">
-    <div class="capture-btn" onclick="takePhoto()"></div>
-    <div class="download">
-      <a id="download" download="selfie-evento.png"></a>
+    <div class="capture-btn" id="btn"></div>
+
+    <div class="preview" id="preview">
+      <img id="photo">
+      <a id="download" download="selfie-evento.png">Descargar foto</a>
     </div>
   </div>
 
 </div>
 
 <script>
-  const video = document.getElementById("video");
-  const canvas = document.getElementById("canvas");
-  const download = document.getElementById("download");
+const video = document.getElementById("video");
+const canvas = document.getElementById("canvas");
+const counter = document.getElementById("counter");
+const flash = document.getElementById("flash");
+const btn = document.getElementById("btn");
+const preview = document.getElementById("preview");
+const photo = document.getElementById("photo");
+const download = document.getElementById("download");
 
-  navigator.mediaDevices.getUserMedia({
-    video: { facingMode: "user" },
-    audio: false
-  }).then(stream => {
-    video.srcObject = stream;
-  });
+navigator.mediaDevices.getUserMedia({
+  video: { facingMode: "user" },
+  audio: false
+}).then(stream => video.srcObject = stream);
 
-  function takePhoto() {
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
+btn.onclick = async () => {
+  btn.classList.add("disabled");
+  preview.style.display = "none";
 
-    const ctx = canvas.getContext("2d");
-    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-    const img = canvas.toDataURL("image/png");
-    download.href = img;
-    download.textContent = "Descargar selfie";
+  for (let i = 3; i > 0; i--) {
+    counter.textContent = i;
+    counter.classList.add("show");
+    await new Promise(r => setTimeout(r, 1000));
+    counter.classList.remove("show");
   }
+
+  flash.classList.add("active");
+
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+  canvas.getContext("2d").drawImage(video, 0, 0);
+
+  const img = canvas.toDataURL("image/png");
+  photo.src = img;
+  download.href = img;
+  preview.style.display = "flex";
+
+  setTimeout(() => {
+    flash.classList.remove("active");
+    btn.classList.remove("disabled");
+  }, 300);
+};
 </script>
 
 </body>
